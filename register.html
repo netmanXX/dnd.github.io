@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For registration</title>
+    <link rel="stylesheet" href="static/css/register.css">
+</head>
+
+<body>
+    <main class="page">
+        <section class="register-card">
+            <button class="exit-button"><--Выйти</button>
+            <h1 class="register-title">Регистрация</h1>
+            <p class="register-subtitle"> Пожалуйста, создайте аккаунт для того что бы ваши данные были в безопасности, и для того что бы продолжить </p>
+            <form class="register-form" action="/register" method="post">
+                <div class="form-group">
+                    <label for="username"> Имя пользователя: </label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Например: Иван123"
+                        required
+                        minlength="3"
+                        autocomplete="username"
+                        autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="email"> email: </label>
+                    <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Например: Иван123@mail.ru"
+                            required
+                            minlength="9"
+                            autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="password"> Пароль: </label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Например: Иван_qwe_asd"
+                        required
+                        minlength="10"
+                        autocomplete="password">
+                </div>
+                <div class="form-group">
+                    <label for="Confirmpassword"> Подтвердите пароль: </label>
+                    <input
+                        type="password"
+                        id="Confirmpassword"
+                        name="confirm_password"
+                        placeholder="Например: Иван_qwe_asd"
+                        required
+                        minlength="10"
+                        autocomplete="password">
+                </div>
+                <fieldset class="form-fieldset">
+                    <legend>Пол</legend>
+                    <label class="radio-option">
+                        <input type="radio" name="gender" value="male" required>
+                        Мужчина
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="gender" value="female" required>
+                        Женщина
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="gender" value="toilet" required>
+                        Унитаз
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="terms" required>
+                        <span>Я согласен с условиями использования</span>
+                    </label>
+                    <button type="submit" class="submit-button">Зарегистрироваться</button>
+                        <p class="login-text">
+                            Уже есть аккаунт?
+                            <a href="/">Войти</a>
+                        </p>
+                </fieldset>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

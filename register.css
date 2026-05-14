@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI";
+    background: linear-gradient(#ED1C24, #FF7F27 0%, #A349A4 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.register-card {
+    background-color: white;
+    border-radius: 32px;
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.2);
+    padding: 40px 32px;
+    width: 90%;
+    max-width: 500px;
+    transition: transform 0.5s ease;
+    color: #000000;
+    animation: fadeInUp 2s ease-out
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px)
+    };
+    to {
+        opacity: 1;
+        transform: translateY(0);
+
+    }
+}
+
+.register-card-hover {
+    transform: scale(1.01);
+}
+
+.register-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1e293b;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.register-subtitle {
+    line-height: 1.5;
+    font-weight: 15px;
+    color: center #64748;
+    margin-bottom: 32px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.font-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    color: #334155;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.form-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+}
+
+.form-fieldset legend {
+    font-weight: 600;
+    font-size: 14px;
+    color: #334155;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.radio-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 24px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.radio-option input {
+    width: auto;
+    margin: 0;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 28px 0;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.checkbox-option input {
+    width: auto;
+    margin: 0;
+}
+
+.exit-button {
+    border-radius: 5px;
+    width: 200px;
+    height: 40px;
+    font-weight: 1000;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link rel="stylesheet" href="/static/css/loging.css">
+</head>
+
+<body>
+    <main class="page">
+        <section class="register-card">
+            <button class="exit-button">&lt;-- Выйти</button>
+            <h1 class="register-title">Вход в аккаунт</h1>
+            <p class="register-subtitle">
+                Пожалуйста, войдите в аккаунт, чтобы ваши данные были в безопасности, и для того, чтобы продолжить.
+            </p>
+            <form class="register-form" action="/" method="post">
+                <div class="form-group">
+                    <label for="username">Имя пользователя:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Например: Иван123"
+                        required
+                        minlength="3"
+                        autocomplete="username"
+                        autofocus>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input
+                        type="password"
+                        id="Password"
+                        name="password"
+                        placeholder="Например: Иван_qwe_asd"
+                        minlength="10"
+                        autocomplete="current-password"
+                        required>
+                    <button type="button" class="toggle-password">👁</button>
+                </div>
+                <div class="form-options">
+                    <label class="check-box-option">
+                        <input type="checkbox" name="remember">
+                        <span>Запомнить меня</span>
+                    </label>
+                </div>
+                <button type="submit" class="submit-button">Войти</button>
+                <div class="form-options">
+                    <a href="#" class="forgot-password" style="color:red">Забыли пароль</a>
+                </div>
+            </form>
+            <p class="register-link">
+                Нет аккаунта?
+                <a href="/register" style="color:red">Зарегистрироваться</a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>

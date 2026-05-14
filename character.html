@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>D&D Лист персонажа - Personaka</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background: #7a5a4b;
+            background-image: radial-gradient(circle at 10% 20%, #8b6b5a, #4a3b2f);
+            font-family: 'Segoe UI', 'Book Antiqua', 'Georgia', 'Times New Roman', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            margin: 0;
+        }
+        /* Главный контейнер - пергаментный стиль */
+        .sheet {
+            max-width: 1300px;
+            width: 100%;
+            background: #fdf8e7;
+            background-image: linear-gradient(145deg, #fff3df 0%, #f7e9d7 100%);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.4), 0 0 0 1px #e2c8a4 inset, 0 0 0 2px #faf0df inset;
+            border-radius: 18px;
+            padding: 1.6rem 2rem 2rem 2rem;
+            transition: all 0.2s;
+        }
+        h1 {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+            color: #4a2a1e;
+            border-bottom: 3px double #c2a15b;
+            display: inline-block;
+            margin: 0 0 0.5rem 0;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.05);
+        }
+        .sub {
+            font-size: 0.9rem;
+            color: #7a5a3e;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #c2a15b;
+            padding-left: 12px;
+        }
+        /* грид-сетка */
+        .grid-main {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.6rem;
+        }
+        /* общие стили блоков */
+        .block {
+            background: rgba(250, 242, 225, 0.7);
+            border-radius: 24px;
+            padding: 0.9rem 1rem 1.2rem 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,200,0.8);
+            border: 1px solid #e8d6bc;
+            transition: 0.1s;
+        }
+        .block h3 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border-left: 8px solid #b97f44;
+            padding-left: 10px;
+            color: #3a281b;
+            font-weight: 600;
+        }
+        .stat-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 0.7rem;
+            align-items: baseline;
+            gap: 5px;
+        }
+        .stat-label {
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #4c3523;
+            min-width: 90px;
+        }
+        input, select, textarea {
+            background: #fffef7;
+            border: 1px solid #d4bc95;
+            border-radius: 12px;
+            padding: 6px 8px;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2a2418;
+            transition: 0.1s;
+            width: auto;
+            flex: 1;
+            min-width: 60px;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #b57c3a;
+            box-shadow: 0 0 0 2px rgba(181,124,58,0.2);
+            background: #fffff2;
+        }
+        .small-input {
+            width: 55px;
+            text-align: center;
+        }
+        .skill-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .skill-name {
+            width: 120px;
+            font-weight: 500;
+        }
+        .skill-mod {
+            width: 45px;
+            text-align: center;
+            background: #ece0cf;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .double-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        hr {
+            margin: 0.8rem 0;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #e1cbaa, transparent);
+        }
+        .passive {
+            background: #e3cfb0;
+            border-radius: 16px;
+            text-align: center;
+            padding: 6px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        .death-saves {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+            justify-content: space-between;
+        }
+        .death-group {
+            text-align: center;
+        }
+        .weapon-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        textarea {
+            width: 100%;
+            resize: vertical;
+            margin-top: 8px;
+        }
+        button {
+            background: #c9985f;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 15px;
+            color: white;
+            font-weight: bold;
+            margin-top: 8px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        button:hover {
+            background: #b07842;
+        }
+        .footer-note {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: #8b6f4c;
+            border-top: 1px dashed #dbcbaa;
+            padding-top: 1rem;
+        }
+        @media (max-width: 850px) {
+            .grid-main { grid-template-columns: 1fr; gap: 1rem; }
+            .sheet { padding: 1rem; }
+            .double-col { grid-template-columns: 1fr; }
+        }
+        .inline-icon {
+            font-weight: bold;
+            background: #e7dac4;
+            border-radius: 20px;
+            padding: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sheet">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap;">
+            <div>
+                <h1>⚔️ Dungeons & Dragons®</h1>
+                <div class="sub">Una Personaka — лист приключений</div>
+            </div>
+            <div style="font-size: 0.8rem; background: #e9ddc9; padding: 0 12px; border-radius: 50px;">⚡ редактируемая копия</div>
+        </div>
+
+        <div class="grid-main">
+            <!-- ЛЕВАЯ КОЛОНКА: Характеристики + навыки -->
+            <div>
+                <!-- Бонус мастерства + вдохновение -->
+                <div class="block">
+                    <div class="stat-row">
+                        <span class="stat-label">🎲 Бонус Мастерства:</span>
+                        <input type="number" step="1" value="2" style="width:70px" id="profBonus">
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">✨ Вдохновение:</span>
+                        <input type="text" placeholder="да/нет" style="width:100px" id="inspiration">
+                    </div>
+                    <hr>
+                    <div style="font-weight: bold; margin-bottom: 8px;">СПАСБРОСКИ & ХАРАКТЕРИСТИКИ</div>
+                    <!-- СИЛА -->
+                    <div class="stat-row"><span class="stat-label">💪 СИЛА (STR)</span><input type="number" class="small-input" id="strVal" value="12"><span class="stat-label">Спасбросок:</span><input type="number" class="small-input" id="strSave" value="1"></div>
+                    <div class="skill-line"><span class="skill-name">Атлетика</span><input type="number" class="skill-mod" id="athletics" value="1"></div>
+                    <!-- ЛОВКОСТЬ (АТМЕТУКА в оригинале но по факту ловкость) -->
+                    <div class="stat-row"><span class="stat-label">🏹 ЛОВКОСТЬ (DEX)</span><input type="number" class="small-input" id="dexVal" value="14"><span class="stat-label">Спасбросок:</span><input type="number" class="small-input" id="dexSave" value="2"></div>
+                    <div class="skill-line"><span class="skill-name">Акробатика</span><input type="number" class="skill-mod" id="acrobatics" value="2"></div>
+                    <div class="skill-line"><span class="skill-name">Ловкость рук</span><input type="number" class="skill-mod" id="sleight" value="2"></div>
+                    <div class="skill-line"><span class="skill-name">Скрытность</span><input type="number" class="skill-mod" id="stealth" value="2"></div>
+                    <!-- ТЕЛОСЛОЖЕНИЕ (ВЫНОСЛИВОСТЬ) -->
+                    <div class="stat-row"><span class="stat-label">❤️ ТЕЛОСЛОЖЕНИЕ (CON)</span><input type="number" class="small-input" id="conVal" value="13"><span class="stat-label">Спасбросок:</span><input type="number" class="small-input" id="conSave" value="1"></div>
+                    <!-- ИНТЕЛЛЕКТ -->
+                    <div class="stat-row"><span class="stat-label">📖 ИНТЕЛЛЕКТ (INT)</span><input type="number" class="small-input" id="intVal" value="10"><span class="stat-label">Спасбросок:</span><input type="number" class="small-input" id="intSave" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Магия / Аркана</span><input type="number" class="skill-mod" id="arcana" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">История</span><input type="number" class="skill-mod" id="history" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Анализ</span><input type="number" class="skill-mod" id="investigation" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Природа</span><input type="number" class="skill-mod" id="nature" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Религия</span><input type="number" class="skill-mod" id="religion" value="0"></div>
+                    <!-- МУДРОСТЬ -->
+                    <div class="stat-row"><span class="stat-label">🧠 МУДРОСТЬ (WIS)</span><input type="number" class="small-input" id="wisVal" value="15"><span class="stat-label">Спасбросок:</span><input type="number" class="small-input" id="wisSave" value="2"></div>
+                    <div class="skill-line"><span class="skill-name">Животные</span><input type="number" class="skill-mod" id="animal" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Проницательность</span><input type="number" class="skill-mod" id="insight" value="2"></div>
+                    <div class="skill-line"><span class="skill-name">Медицина</span><input type="number" class="skill-mod" id="medicine" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Внимательность</span><input type="number" class="skill-mod" id="perception" value="2"></div>
+                    <div class="skill-line"><span class="skill-name">Выживание</span><input type="number" class="skill-mod" id="survival" value="0"></div>
+                    <!-- ХАРИЗМА -->
+                    <div class="stat-row"><span class="stat-label">🎭 ХАРИЗМА (CHA)</span><input type="number" class="small-input" id="chaVal" value="11"><span class="stat-label">Спасбросок:</span><input type="number" class="small-input" id="chaSave" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Выступление</span><input type="number" class="skill-mod" id="performance" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Обман</span><input type="number" class="skill-mod" id="deception" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Запугивание</span><input type="number" class="skill-mod" id="intimidation" value="0"></div>
+                    <div class="skill-line"><span class="skill-name">Убеждение</span><input type="number" class="skill-mod" id="persuasion" value="0"></div>
+                    <div class="passive">👁️ Пассивная внимательность: <span id="passivePerception">12</span></div>
+                </div>
+
+                <!-- Доспехи + Оргъки/оружие -->
+                <div class="block">
+                    <h3>🛡️ Доспех & Вооружение</h3>
+                    <div class="stat-row"><span class="stat-label">Легкий:</span><input type="text" placeholder="Кожаный" id="lightArmor"></div>
+                    <div class="stat-row"><span class="stat-label">Средний:</span><input type="text" placeholder="Кольчуга" id="mediumArmor"></div>
+                    <div class="stat-row"><span class="stat-label">Тяжелый:</span><input type="text" placeholder="Латы" id="heavyArmor"></div>
+                    <div class="stat-row"><span class="stat-label">Шаг (щит):</span><input type="text" placeholder="+2 AC" id="shield"></div>
+                    <hr>
+                    <div><strong>⚔️ Оружие (Оргъки / Простое / Воин.)</strong></div>
+                    <div class="weapon-row"><input type="text" placeholder="Название" style="width:120px" id="weapon1Name"><input type="text" placeholder="Бонус атаки" style="width:60px"><input type="text" placeholder="Урон" style="width:70px"></div>
+                    <div class="weapon-row"><input type="text" placeholder="Название" style="width:120px" id="weapon2Name"><input type="text" placeholder="Бонус" style="width:60px"><input type="text" placeholder="Урон" style="width:70px"></div>
+                    <div class="weapon-row"><input type="text" placeholder="Простое оружие" style="width:120px" id="simpleWeap"></div>
+                    <div><input type="text" placeholder="Воинское / другое" style="width:100%; margin-top:8px" id="martialWeap"></div>
+                </div>
+
+                <!-- Походы: толкание, супергерой и тд -->
+                <div class="block">
+                    <h3>🏋️ Походы & Сила</h3>
+                    <div class="stat-row"><span class="stat-label">Толкание/волочение/портьер:</span><input type="text" placeholder="кг/фунты" id="pushDrag"></div>
+                    <div class="stat-row"><span class="stat-label">Супергерой (сила * 30):</span><input type="text" placeholder="макс.груз" id="superStrength"></div>
+                    <div class="stat-row"><span class="stat-label">Сила * 30:</span><span id="strTimes30" style="font-weight:bold;">360</span></div>
+                    <div class="stat-row"><span class="stat-label">Подъем и перенос:</span><input type="text" placeholder="2x грузоподъемность" id="liftCarry"></div>
+                    <div>📦 Грузоподъемность (Сила * 15): <span id="carryCapacity">180</span> фунтов</div>
+                </div>
+            </div>
+
+            <!-- СРЕДНЯЯ КОЛОНКА: Здоровье, кости хитов, смерть, атаки, заклинания -->
+            <div>
+                <div class="block">
+                    <h3>❤️ ЗДОРОВЬЕ & ХИТЫ</h3>
+                    <div class="stat-row"><span class="stat-label">❌ Текущие хиты:</span><input type="number" id="currentHp" value="28" style="width:80px"></div>
+                    <div class="stat-row"><span class="stat-label">💪 Временные хиты:</span><input type="number" id="tempHp" value="0" style="width:80px"></div>
+                    <div class="stat-row"><span class="stat-label">🎲 Кость Хитов (Кость китов):</span><select id="hitDice"><option>d6</option><option>d8</option><option selected>d10</option><option>d12</option></select><span> &nbsp; осталось: </span><input type="text" id="hitDiceLeft" placeholder="3/3" style="width:55px"></div>
+                    <hr>
+                    <div><strong>📈 УСПЕХИ / ПРОВАЛЫ / Смерть</strong></div>
+                    <div class="death-saves">
+                        <div class="death-group">Успехи: ⚪⚪⚪ <br> <input type="text" placeholder="кол-во (0-3)" id="successes" style="width:50px"></div>
+                        <div class="death-group">Провалы: ⚫⚫⚫ <br> <input type="text" placeholder="0-3" id="failures" style="width:50px"></div>
+                        <div class="death-group">Спасбросок от смерти: <input type="text" placeholder="бросок" id="deathSaveRoll" style="width:55px"></div>
+                    </div>
+                </div>
+
+                <div class="block">
+                    <h3>⚔️ АТАКИ И ЗАКЛИНАНИЯ</h3>
+                    <div><em>Название / Урон / особенности</em></div>
+                    <textarea rows="3" placeholder="Атака мечом +5, урон 1d8+3; Заклинание 'Огненный шар'... " id="attacksSpells"></textarea>
+                    <div style="margin-top:12px;"><strong>📜 ЧАРОДЕЙСТВО (Заклинания)</strong></div>
+                    <div class="stat-row"><span class="stat-label">Длина (дистанция):</span><input type="text" id="spellRange" placeholder="30 фт"></div>
+                    <div class="stat-row"><span class="stat-label">Высота / область:</span><input type="text" id="spellArea" placeholder="куб/конус"></div>
+                    <div class="stat-row"><span class="stat-label">Приток (длительность):</span><input type="text" id="duration" placeholder="конц. 1 мин"></div>
+                    <div class="stat-row"><span class="stat-label">Страна (школа магии):</span><input type="text" id="school" placeholder="Воплощение"></div>
+                    <div><strong>Слоты заклинаний:</strong> <input type="text" id="spellSlots" placeholder="1 ур.:2, 2 ур.:1"></div>
+                </div>
+
+                <div class="block">
+                    <h3>🏅 ОСОБЕННОСТИ КЛАССА И РАСЫ</h3>
+                    <textarea rows="5" placeholder="Например: Второе дыхание, Темное зрение, Ярость, Заклинания расы... " id="features"></textarea>
+                    <div class="stat-row" style="margin-top:10px;"><span class="stat-label">Кость удачи (d6/d8/d10/d12):</span><select id="luckDie"><option>d4</option><option>d6</option><option>d8</option><option>d10</option><option>d12</option></select></div>
+                </div>
+            </div>
+
+            <!-- ПРАВАЯ КОЛОНКА: оставшиеся атрибуты: инициатива, AC, скорость, валюта, инструменты перевозка -->
+            <div>
+                <div class="block">
+                    <h3>⚙️ БОЕВАЯ СТАТИСТИКА</h3>
+                    <div class="stat-row"><span class="stat-label">Класс Доспеха (AC):</span><input type="number" id="armorClass" value="15"></div>
+                    <div class="stat-row"><span class="stat-label">Инициатива:</span><input type="number" id="initiative" value="2"></div>
+                    <div class="stat-row"><span class="stat-label">Скорость:</span><input type="text" id="speed" value="30 фт"></div>
+                    <hr>
+                    <div class="stat-row"><span class="stat-label">💰 Монеты (зм/см/мм):</span><input type="text" id="coins" placeholder="50 зм, 20 см"></div>
+                    <div class="stat-row"><span class="stat-label">Снаряжение и инвентарь:</span></div>
+                    <textarea rows="2" id="items" placeholder="Рюкзак, факелы, веревка, рацион..."></textarea>
+                </div>
+                <div class="block">
+                    <h3>📏 ГАБАРИТЫ / ПЕРЕВОЗКА</h3>
+                    <div class="stat-row"><span class="stat-label">Длина (рост):</span><input type="text" id="height" placeholder="5 фт 10 дм"></div>
+                    <div class="stat-row"><span class="stat-label">Вес (приток?):</span><input type="text" id="weight" placeholder="160 фунтов"></div>
+                    <div class="stat-row"><span class="stat-label">Страна / происх.:</span><input type="text" id="origin" placeholder="Фаэрун"></div>
+                    <hr>
+                    <div><strong>Грузоподъемность:</strong> <span id="carryWeightShow">0</span> (сила*15) &nbsp; <strong>Подъем/перекос:</strong> <span id="liftShow">0</span></div>
+                    <div class="stat-row"><span class="stat-label">Толкание, волочение, портьер:</span><input type="text" id="pushCarry" placeholder="макс. вес"></div>
+                    <button type="button" id="refreshCarryBtn">📐 Пересчитать грузоподъемность</button>
+                </div>
+                <div class="block">
+                    <h3>🎲 БРОСКИ & ЗАМЕТКИ</h3>
+                    <div class="stat-row"><span class="stat-label">Кость КИТОВ</span><span>(выбрана)</span><span id="selectedHitDie">d10</span></div>
+                    <div class="stat-row"><span class="stat-label">Свободная заметка</span><input type="text" id="notesShort" placeholder="Вдохновение DM"></div>
+                    <div><em>Навыки рассчитаны по модификаторам характеристик</em></div>
+                    <div style="font-size:12px; margin-top:12px;"><strong>📌 ПРАВИЛА:</strong> КОСТЬ КИТОВ — восстанавливается на привале.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Дополнительная строка "НАЗВАНИЕ - УРОН" и продублируем кнопки сброса -->
+        <div style="margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+            <div><span style="font-weight:bold;">🏷️ НАЗВАНИЕ ПЕРСОНАЖА:</span> <input type="text" id="charName" placeholder="Арагорн, эльфийка Лиа, ..." style="width: 250px;"></div>
+            <div><span style="font-weight:bold;">📊 УРОВЕНЬ:</span> <input type="number" id="level" value="3" style="width:60px"></div>
+            <button id="resetBtn" style="background:#5a3e2e;">⟳ Очистить поля (сброс)</button>
+            <button id="exportBtn" style="background:#2e5a3e;">📷 Экспорт в PNG</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // ---------- Расчёт характеристик ----------
+        function updatePassive() {
+            const percep = parseFloat(document.getElementById('perception').value) || 0;
+            document.getElementById('passivePerception').innerText = 10 + percep;
+        }
+        function updateCarryAndStr() {
+            const str = parseInt(document.getElementById('strVal').value) || 10;
+            document.getElementById('carryCapacity').innerText = str * 15;
+            document.getElementById('strTimes30').innerText = str * 30;
+            document.getElementById('carryWeightShow').innerText = str * 15;
+            document.getElementById('liftShow').innerText = str * 30;
+            // Автозаполнение пустых полей
+            if (!document.getElementById('superStrength').value)
+                document.getElementById('superStrength').value = (str*30) + " фунтов";
+            if (!document.getElementById('liftCarry').value)
+                document.getElementById('liftCarry').value = (str*30) + " (подъем)";
+            if (!document.getElementById('pushDrag').value)
+                document.getElementById('pushDrag').value = (str*30) + " (толкание)";
+        }
+        function syncHitDie() {
+            document.getElementById('selectedHitDie').innerText = document.getElementById('hitDice').value;
+        }
+
+        // Подписка на изменения
+        const watched = ['strVal','dexVal','conVal','intVal','wisVal','chaVal','perception'];
+        watched.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', () => { updatePassive(); updateCarryAndStr(); });
+        });
+        document.getElementById('strVal')?.addEventListener('input', updateCarryAndStr);
+        document.getElementById('hitDice')?.addEventListener('change', syncHitDie);
+        document.getElementById('refreshCarryBtn')?.addEventListener('click', () => {
+            updateCarryAndStr(); updatePassive();
+        });
+
+        // Сброс полей
+        document.getElementById('resetBtn')?.addEventListener('click', () => {
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(el => {
+                if (el.tagName === 'SELECT') el.selectedIndex = 0;
+                else if (el.type === 'number') el.value = '';
+                else el.value = '';
+            });
+            // Базовые значения
+            document.getElementById('strVal').value = 12;
+            document.getElementById('dexVal').value = 14;
+            document.getElementById('conVal').value = 13;
+            document.getElementById('intVal').value = 10;
+            document.getElementById('wisVal').value = 15;
+            document.getElementById('chaVal').value = 11;
+            document.getElementById('profBonus').value = 2;
+            document.getElementById('level').value = 3;
+            document.getElementById('speed').value = '30 фт';
+            document.getElementById('perception').value = 2;
+            updateCarryAndStr(); updatePassive(); syncHitDie();
+        });
+
+        // Инициализация
+        updateCarryAndStr(); updatePassive(); syncHitDie();
+
+        // ---------- Экспорт в PNG ----------
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const btn = this;
+            btn.textContent = '⏳ Генерация...';
+            btn.disabled = true;
+            // Захватываем элемент с классом .sheet
+            const sheet = document.querySelector('.sheet');
+            html2canvas(sheet, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#fdf8e7',
+                scrollY: -window.scrollY
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const charName = document.getElementById('charName').value.trim() || 'персонаж';
+                link.download = charName + '_лист.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                btn.textContent = '📷 Экспорт в PNG';
+                btn.disabled = false;
+            }).catch(err => {
+                console.error('Ошибка экспорта:', err);
+                btn.textContent = '📷 Экспорт в PNG';
+                btn.disabled = false;
+                alert('Не удалось создать PNG. Проверьте консоль.');
+            });
+        });
+    </script>
+</body>
+</html>
